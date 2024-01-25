@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/weqqr/flacster/internal/domain"
-	"github.com/weqqr/flacster/internal/handler"
+	"github.com/flacster/flacster/internal/domain"
+	"github.com/flacster/flacster/internal/handler"
 )
 
 func ListFiles(w http.ResponseWriter, r *http.Request) {

@@ -3,8 +3,8 @@ package main
 import (
 	"net/http"
 
+	"github.com/flacster/flacster/internal/httpapi"
 	"github.com/go-chi/chi/v5"
-	"github.com/weqqr/flacster/internal/httpapi"
 
 	"log"
 )
