@@ -21,5 +21,7 @@ func ListFiles(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
-	w.Write(data)
+	if _, err = w.Write(data); err != nil {
+		return
+	}
 }
