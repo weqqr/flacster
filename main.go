@@ -1,12 +1,15 @@
 package main
 
 import (
+	"errors"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/go-chi/chi/v5"
 
+	"github.com/flacster/flacster/internal/config"
 	"github.com/flacster/flacster/internal/httpapi"
 )
 
@@ -39,7 +42,25 @@ func (s *Server) Start(address string) {
 	log.Fatal(server.ListenAndServe())
 }
 
+func loadConfig() config.Config {
+	configPath := config.Path()
+
+	conf, err := config.ReadConfig(configPath)
+
+	if errors.Is(err, os.ErrNotExist) {
+		log.Println("config file not found, using default")
+		conf = config.Default()
+		conf.Save(configPath)
+	} else if err != nil {
+		log.Fatalf("failed to read config: %v", err)
+	}
+
+	return conf
+}
+
 func main() {
+	conf := loadConfig()
+
 	server := NewServer()
-	server.Start(":1337")
+	server.Start(conf.Address)
 }

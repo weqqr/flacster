@@ -5,6 +5,7 @@ go 1.21
 require (
 	github.com/go-chi/chi/v5 v5.0.11
 	github.com/jackc/pgx/v5 v5.5.2
+	github.com/pelletier/go-toml/v2 v2.1.1
 )
 
 require (
