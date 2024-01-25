@@ -1,12 +1,13 @@
 package main
 
 import (
+	"log"
 	"net/http"
+	"time"
 
-	"github.com/flacster/flacster/internal/httpapi"
 	"github.com/go-chi/chi/v5"
 
-	"log"
+	"github.com/flacster/flacster/internal/httpapi"
 )
 
 type Server struct {
@@ -26,8 +27,16 @@ func NewServer() Server {
 }
 
 func (s *Server) Start(address string) {
+	server := &http.Server{
+		Addr:         address,
+		Handler:      s.router,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  30 * time.Second,
+	}
+
 	log.Printf("listening at %v", address)
-	log.Fatal(http.ListenAndServe(address, s.router))
+	log.Fatal(server.ListenAndServe())
 }
 
 func main() {
