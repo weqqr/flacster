@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/cors"
 
 	"github.com/flacster/flacster/internal/config"
 	"github.com/flacster/flacster/internal/httpapi"
@@ -21,6 +22,12 @@ type Server struct {
 
 func NewServer(static fs.FS) Server {
 	r := chi.NewRouter()
+
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins: []string{"https://*", "http://*"},
+		AllowedMethods: []string{"HEAD", "GET", "POST", "DELETE", "PATCH"},
+		AllowedHeaders: []string{"*"},
+	}))
 
 	r.Route("/api/v1", func(r chi.Router) {
 		r.Get("/list-files", httpapi.ListFiles)
