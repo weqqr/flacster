@@ -1,7 +1,9 @@
 package main
 
 import (
+	"embed"
 	"errors"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -17,12 +19,14 @@ type Server struct {
 	router chi.Router
 }
 
-func NewServer() Server {
+func NewServer(static fs.FS) Server {
 	r := chi.NewRouter()
 
 	r.Route("/api/v1", func(r chi.Router) {
 		r.Get("/list-files", httpapi.ListFiles)
 	})
+
+	r.Handle("/*", http.FileServer(http.FS(static)))
 
 	return Server{
 		router: r,
@@ -58,9 +62,14 @@ func loadConfig() config.Config {
 	return conf
 }
 
+//go:embed all:static/*
+var static embed.FS
+
 func main() {
 	conf := loadConfig()
 
-	server := NewServer()
+	sub, _ := fs.Sub(static, "static")
+
+	server := NewServer(sub)
 	server.Start(conf.Address)
 }
