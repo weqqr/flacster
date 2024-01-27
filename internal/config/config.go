@@ -8,14 +8,16 @@ import (
 )
 
 type Config struct {
-	Address    string `json:"address"`
-	ConnString string `json:"conn_string"`
+	Address     string `toml:"address"`
+	ConnString  string `toml:"conn_string"`
+	LibraryPath string `toml:"library_path"`
 }
 
 func Default() Config {
 	return Config{
-		Address:    ":1337",
-		ConnString: "",
+		Address:     ":1337",
+		ConnString:  "",
+		LibraryPath: "",
 	}
 }
 

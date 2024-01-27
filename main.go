@@ -10,18 +10,23 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 
 	"github.com/flacster/flacster/internal/config"
-	"github.com/flacster/flacster/internal/httpapi"
+	"github.com/flacster/flacster/internal/httpapi/library"
 )
 
 type Server struct {
 	router chi.Router
 }
 
-func NewServer(static fs.FS) Server {
+func NewServer(config config.Config, static fs.FS) Server {
 	r := chi.NewRouter()
+
+	r.Use(middleware.RealIP)
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
 
 	r.Use(cors.Handler(cors.Options{
 		AllowedOrigins: []string{"https://*", "http://*"},
@@ -29,8 +34,10 @@ func NewServer(static fs.FS) Server {
 		AllowedHeaders: []string{"*"},
 	}))
 
+	libraryServer := library.NewServer(config)
+
 	r.Route("/api/v1", func(r chi.Router) {
-		r.Get("/list-files", httpapi.ListFiles)
+		r.Mount("/library", libraryServer.Router())
 	})
 
 	r.Handle("/*", http.FileServer(http.FS(static)))
@@ -77,6 +84,6 @@ func main() {
 
 	sub, _ := fs.Sub(static, "static")
 
-	server := NewServer(sub)
+	server := NewServer(conf, sub)
 	server.Start(conf.Address)
 }

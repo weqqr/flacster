@@ -4,7 +4,7 @@
 	let files: string[] = [];
 
 	onMount(async () => {
-		const res = await fetch('http://localhost:1337/api/v1/list-files');
+		const res = await fetch('http://localhost:1337/api/v1/library/files');
 		files = (await res.json())['files'];
 	});
 </script>
