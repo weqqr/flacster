@@ -1,21 +1,13 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
-	let files: string[] = [];
-
-	onMount(async () => {
-		const res = await fetch('http://localhost:1337/api/v1/library/files');
-		files = (await res.json())['files'];
-	});
+	import Header from '$lib/Header.svelte';
+	import HeaderButton from '$lib/HeaderButton.svelte';
+	import Album from './Album.svelte';
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<Header>
+	<HeaderButton title="Home" href="#" active={false}></HeaderButton>
+	<HeaderButton title="Collection" href="#" active={true}></HeaderButton>
+	<HeaderButton title="Settings" href="#" active={false}></HeaderButton>
+</Header>
 
-<ul>
-	{#each files as file}
-		<li>{file}</li>
-	{:else}
-		<p>loading</p>
-	{/each}
-</ul>
+<Album />
