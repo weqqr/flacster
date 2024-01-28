@@ -8,8 +8,6 @@
 	{href}
 	class:bg-white={active}
 	class:text-black={active}
-	class:bg-black={!active}
-	class:text-white={!active}
 	class:hover:text-black={!active}
 	class:hover:bg-white={!active}
 	class="px-3 flex items-center transition select-none"

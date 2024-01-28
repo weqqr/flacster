@@ -4,10 +4,20 @@
 	import Album from './Album.svelte';
 </script>
 
+<style>
+	.main {
+		height: calc(100% - theme(height.8));
+	}
+</style>
+
 <Header>
 	<HeaderButton title="Home" href="#" active={false}></HeaderButton>
 	<HeaderButton title="Collection" href="#" active={true}></HeaderButton>
 	<HeaderButton title="Settings" href="#" active={false}></HeaderButton>
 </Header>
 
-<Album />
+<main class="main overflow-scroll select-none">
+	<div class="max-w-screen-lg m-auto pt-4">
+		<Album />
+	</div>
+</main>
