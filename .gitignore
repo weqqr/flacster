@@ -23,3 +23,5 @@ go.work
 /static
 
 flacster.toml
+config.mk
+docker-compose.override.yml
