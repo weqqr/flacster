@@ -1,0 +1,14 @@
+services:
+  database:
+    container_name: db
+    image: postgres:16-alpine3.19
+
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "1337:1337"
+    depends_on:
+      - database

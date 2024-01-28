@@ -1,0 +1,9 @@
+services:
+  database:
+    environment:
+      - POSTGRES_USER=
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=
+  api:
+    environment:
+      - DB_SOURCE=postgresql://username:port@port/database?sslmode=disable
