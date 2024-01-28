@@ -1,9 +1,17 @@
 services:
   database:
     environment:
-      - POSTGRES_USER=
-      - POSTGRES_PASSWORD=
-      - POSTGRES_DB=
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
   api:
     environment:
-      - DB_SOURCE=postgresql://username:port@port/database?sslmode=disable
+      - DB_SOURCE=postgresql://user:password@localhost:port/db?sslmode=disable
+    volumes:
+      - /C/Users/UnT3a/Music:/app/music
+
+volumes:
+  pgdata:
