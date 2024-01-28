@@ -2,6 +2,8 @@ services:
   database:
     container_name: db
     image: postgres:16-alpine3.19
+    ports:
+      - "5432:5432"
 
   api:
     container_name: api
