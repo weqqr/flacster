@@ -19,7 +19,12 @@ func (c *Handler) ListFiles(request domain.ListFilesRequest) (domain.ListFilesRe
 			return nil
 		}
 
-		files = append(files, path)
+		relativePath, err := filepath.Rel(c.Config.LibraryPath, path)
+		if err != nil {
+			return err
+		}
+
+		files = append(files, relativePath)
 
 		return nil
 	})
