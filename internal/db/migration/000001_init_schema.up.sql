@@ -1,99 +1,114 @@
-create table if not exists "users"
+create table if not exists users
 (
-    "user_id"       uuid default gen_random_uuid() primary key,
-    "username"      text not null,
-    "email"         text not null,
-    "password_hash" text not null
+    user_id  uuid primary key default gen_random_uuid(),
+    username text not null,
+    email    text not null,
+    password text not null
 );
 
-create table if not exists "artists"
+comment on column users.user_id is 'Unique identifier of the user';
+comment on column users.username is 'Users username';
+comment on column users.email is 'Users email address';
+comment on column users.password is 'Password hash of the user';
+
+create table if not exists tracks
 (
-    "artist_id"   uuid default gen_random_uuid() primary key,
-    "artist_name" text not null
+    track_id   uuid primary key default gen_random_uuid(),
+    track_name text not null,
+    duration   int  not null,
+    file_path  text not null
 );
 
-create table if not exists "albums"
+comment on column tracks.track_id is 'Unique identifier for the track';
+comment on column tracks.track_name is 'Name of the track';
+comment on column tracks.duration is 'Duration of the track in seconds';
+comment on column tracks.file_path is 'File path of the track on the server';
+
+create table if not exists playlists
 (
-    "album_id"   uuid default gen_random_uuid() primary key,
-    "artist_id"  uuid,
-    "album_name" text not null,
-    "album_type" text not null
+    playlist_id   uuid primary key default gen_random_uuid(),
+    playlist_name text not null
 );
 
-create table if not exists "playlists"
+comment on column playlists.playlist_id is 'Unique identifier for the playlist';
+comment on column playlists.playlist_name is 'Name of the playlist';
+
+create table if not exists artists
 (
-    "playlist_id"   uuid default gen_random_uuid() primary key,
-    "user_id"       uuid,
-    "playlist_name" text not null
+    artist_id   uuid primary key default gen_random_uuid(),
+    artist_name text not null
 );
 
-create table if not exists "tracks"
+comment on column artists.artist_id is 'Unique identifier of the artist';
+comment on column artists.artist_name is 'Artist name';
+
+create table if not exists albums
 (
-    "track_id"   uuid default gen_random_uuid() primary key,
-    "artist_id"  uuid,
-    "album_id"   uuid,
-    "track_name" text not null,
-    "duration"   int  not null,
-    "file_path"  text not null
+    album_id     uuid primary key default (gen_random_uuid()),
+    album_name   text not null,
+    album_type   text not null,
+    release_year timestamptz,
+    genre        text,
+    description  text
 );
 
-create table if not exists "playlist_tracks"
+comment on column albums.album_id is 'Unique identifier of the album';
+comment on column albums.album_name is 'Album name';
+comment on column albums.album_type is 'Album type (single or album)';
+comment on column albums.release_year is 'Year of album release';
+comment on column albums.genre is 'Genre of the album';
+comment on column albums.description is 'Description of the album';
+
+create table if not exists user_playlists
 (
-    "playlist_id" uuid,
-    "track_id"    uuid,
-    primary key ("playlist_id", "track_id")
+    user_id     uuid references users (user_id),
+    playlist_id uuid references playlists (playlist_id),
+    primary key (user_id, playlist_id)
 );
 
-create index on "albums" ("artist_id");
-create index on "playlists" ("user_id");
+comment on column user_playlists.user_id is 'Reference to the user';
+comment on column user_playlists.playlist_id is 'Reference to the playlist';
 
-create index on "tracks" ("artist_id");
-create index on "tracks" ("album_id");
+create table if not exists artist_tracks
+(
+    artist_id uuid references artists (artist_id),
+    track_id  uuid references tracks (track_id),
+    primary key (artist_id, track_id)
+);
 
-create index on "playlist_tracks" ("playlist_id");
-create index on "playlist_tracks" ("track_id");
+comment on column artist_tracks.artist_id is 'Unique identifier of the artist';
+comment on column artist_tracks.track_id is 'Artist name';
 
-comment on column "users"."user_id" IS 'Уникальный идентификатор пользователя';
-comment on column "users"."username" IS 'Имя пользователя';
-comment on column "users"."email" IS 'Электронная почта пользователя';
-comment on column "users"."password_hash" IS 'Хеш пароля пользователя';
+create table if not exists artist_albums
+(
+    artist_id uuid references artists (artist_id),
+    album_id  uuid references albums (album_id),
+    primary key (artist_id, album_id)
+);
 
-comment on column "artists"."artist_id" IS 'Уникальный идентификатор артиста';
-comment on column "artists"."artist_name" IS 'Имя артиста';
+comment on column artist_albums.artist_id is 'Reference to the artist';
+comment on column artist_albums.album_id is 'Reference to the album';
 
-comment on column "albums"."album_id" IS 'Уникальный идентификатор альбома';
-comment on column "albums"."artist_id" IS 'Ссылка на артиста';
-comment on column "albums"."album_name" IS 'Название альбома';
-comment on column "albums"."album_type" IS 'Тип альбома (Сингл или Альбом)';
+create table if not exists album_tracks
+(
+    album_id     uuid references albums (album_id),
+    track_id     uuid references tracks (track_id),
+    track_number int,
+    primary key (album_id, track_id)
+);
 
-comment on column "playlists"."playlist_id" IS 'Уникальный идентификатор плейлиста';
-comment on column "playlists"."user_id" IS 'Ссылка на пользователя';
-comment on column "playlists"."playlist_name" IS 'Название плейлиста';
+comment on column album_tracks.album_id is 'Reference to the album';
+comment on column album_tracks.track_id is 'Reference to the track';
+comment on column album_tracks.track_number is 'Track number in the album';
 
-comment on column "tracks"."track_id" IS 'Уникальный идентификатор трека';
-comment on column "tracks"."artist_id" IS 'Ссылка на артиста';
-comment on column "tracks"."album_id" IS 'Ссылка на альбом';
-comment on column "tracks"."track_name" IS 'Название трека';
-comment on column "tracks"."duration" IS 'Длительность трека в секундах';
-comment on column "tracks"."file_path" IS 'Путь к файлу трека на сервере';
+create table if not exists playlist_tracks
+(
+    playlist_id  uuid references playlists (playlist_id),
+    track_id     uuid references tracks (track_id),
+    track_number int,
+    primary key (playlist_id, track_id)
+);
 
-comment on column "playlist_tracks"."playlist_id" IS 'Ссылка на плейлист';
-comment on column "playlist_tracks"."track_id" IS 'Ссылка на трек';
-
-alter table "albums"
-    add foreign key ("artist_id") references "artists" ("artist_id");
-
-alter table "playlists"
-    add foreign key ("user_id") references "users" ("user_id");
-
-alter table "tracks"
-    add foreign key ("artist_id") references "artists" ("artist_id");
-
-alter table "tracks"
-    add foreign key ("album_id") references "albums" ("album_id");
-
-alter table "playlist_tracks"
-    add foreign key ("playlist_id") references "playlists" ("playlist_id");
-
-alter table "playlist_tracks"
-    add foreign key ("track_id") references "tracks" ("track_id");
+comment on column playlist_tracks.playlist_id is 'Reference to the playlist';
+comment on column playlist_tracks.track_id is 'Reference to the track';
+comment on column playlist_tracks.track_number is 'Track number in the playlist';

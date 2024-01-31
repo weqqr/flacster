@@ -11,7 +11,7 @@ services:
     environment:
       - DB_SOURCE=postgresql://user:password@localhost:port/db?sslmode=disable
     volumes:
-      - /C/Users/UnT3a/Music:/app/music
+      - /path/to/music:/app/music
 
 volumes:
   pgdata:

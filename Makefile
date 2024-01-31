@@ -10,9 +10,12 @@ backend:
 golint:
 	golangci-lint run ./...
 
+.PHONY: build
+build:
+	docker-compose build
+
 .PHONY: up
 up:
-	docker-compose build
 	docker-compose -f $(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_OVERRIDE) up -d
 
 .PHONY: createdb
@@ -61,8 +64,5 @@ logs:
 gosec:
 	gosec ./...
 
-.PHONY: all init
+.PHONY: all
 all: backend
-init:
-	up
-	migrateup
