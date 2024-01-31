@@ -1,0 +1,17 @@
+services:
+  database:
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    environment:
+      - DB_SOURCE=postgresql://user:password@localhost:port/db?sslmode=disable
+    volumes:
+      - /path/to/music:/app/music
+
+volumes:
+  pgdata:
