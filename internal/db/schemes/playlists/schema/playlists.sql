@@ -5,5 +5,5 @@ create table if not exists playlists
     playlist_name text not null
 );
 
-comment on column playlists.playlist_id is 'Уникальный идентификатор плейлиста';
-comment on column playlists.playlist_name is 'Название плейлиста';
+comment on column playlists.playlist_id is 'Unique identifier for the playlist';
+comment on column playlists.playlist_name is 'Name of the playlist';

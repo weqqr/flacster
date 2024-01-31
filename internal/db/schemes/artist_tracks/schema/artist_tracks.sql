@@ -6,5 +6,5 @@ create table artist_tracks
     primary key (artist_id, track_id)
 );
 
-comment on column artist_tracks.artist_id IS 'Ссылка на автора';
-comment on column artist_tracks.track_id IS 'Ссылка на трек';
+comment on column artist_tracks.artist_id is 'Unique identifier of the artist';
+comment on column artist_tracks.track_id is 'Artist name';

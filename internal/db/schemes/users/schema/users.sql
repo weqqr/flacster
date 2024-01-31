@@ -7,7 +7,7 @@ create table if not exists users
     password text not null
 );
 
-comment on column users.user_id is 'Уникальный идентификатор пользователя';
-comment on column users.username is 'Имя пользователя';
-comment on column users.email is 'Электронная почта пользователя';
-comment on column users.password is 'Хеш пароля пользователя';
+comment on column users.user_id is 'Unique identifier of the user';
+comment on column users.username is 'Users username';
+comment on column users.email is 'Users email address';
+comment on column users.password is 'Password hash of the user';

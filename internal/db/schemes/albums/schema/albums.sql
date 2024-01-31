@@ -9,9 +9,9 @@ create table if not exists albums
     description  text
 );
 
-comment on column albums.album_id is 'Уникальный идентификатор альбома';
-comment on column albums.album_name is 'Название альбома';
-comment on column albums.album_type is 'Тип альбома (сингл или альбом)';
-comment on column albums.release_year is 'Год выпуска альбома';
-comment on column albums.genre is 'Жанр альбома';
-comment on column albums.description is 'Описание альбома';
+comment on column albums.album_id is 'Unique identifier of the album';
+comment on column albums.album_name is 'Album name';
+comment on column albums.album_type is 'Album type (single or album)';
+comment on column albums.release_year is 'Year of album release';
+comment on column albums.genre is 'Genre of the album';
+comment on column albums.description is 'Description of the album';

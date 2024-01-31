@@ -1,13 +1,13 @@
 drop function if exists public.get_artists;
 create or replace function public.get_artists(
-    input_search_term text,
-    out output_artists setof artists
+    _search_term text,
+    out o_artists setof artists
 ) as
 $$
 begin
     return query
         select *
         from artists
-        where artist_name ilike '%' || input_search_term || '%';
+        where artist_name ilike '%' || _search_term || '%';
 end;
 $$ language plpgsql;

@@ -1,11 +1,11 @@
 drop function if exists public.create_album;
 create or replace function public.create_album(
-    input_album_name text,
-    input_album_type text,
-    input_release_year timestamptz,
-    input_genre text,
-    input_description text,
-    out output_album_id uuid
+    _album_name text,
+    _album_type text,
+    _release_year timestamptz,
+    _genre text,
+    _description text,
+    out o_album_id uuid
 ) as
 $$
 begin
@@ -14,11 +14,11 @@ begin
                         release_year,
                         genre,
                         description)
-    values (input_album_name,
-            input_album_type,
-            input_release_year,
-            input_genre,
-            input_description)
-    returning album_id into output_album_id;
+    values (_album_name,
+            _album_type,
+            _release_year,
+            _genre,
+            _description)
+    returning album_id into o_album_id;
 end;
 $$ language plpgsql;

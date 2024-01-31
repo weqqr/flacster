@@ -6,5 +6,5 @@ create table artist_albums
     primary key (artist_id, album_id)
 );
 
-comment on column artist_albums.artist_id is 'Ссылка на артиста';
-comment on column artist_albums.album_id is 'Ссылка на альбом';
+comment on column artist_albums.artist_id is 'Reference to the artist';
+comment on column artist_albums.album_id is 'Reference to the album';

@@ -5,5 +5,5 @@ create table if not exists artists
     artist_name text not null
 );
 
-comment on column artists.artist_id is 'Уникальный идентификатор артиста';
-comment on column artists.artist_name is 'Имя артиста';
+comment on column artists.artist_id is 'Unique identifier of the artist';
+comment on column artists.artist_name is 'Artist name';

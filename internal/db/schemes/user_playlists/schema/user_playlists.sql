@@ -6,5 +6,5 @@ create table if not exists user_playlists
     primary key (user_id, playlist_id)
 );
 
-comment on column user_playlists.user_id is 'Ссылка на пользователя';
-comment on column user_playlists.playlist_id is 'Ссылка на плейлист';
+comment on column user_playlists.user_id is 'Reference to the user';
+comment on column user_playlists.playlist_id is 'Reference to the playlist';

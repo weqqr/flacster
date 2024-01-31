@@ -1,14 +1,14 @@
 drop function if exists public.get_user;
 create or replace function public.get_user(
-    input_user_id uuid,
-    out output_username text,
-    out output_email text
+    _user_id uuid,
+    out o_username text,
+    out o_email text
 ) as
 $$
 begin
     select username, email
-    into output_username, output_email
+    into o_username, o_email
     from users
-    where user_id = input_user_id;
+    where user_id = _user_id;
 end;
 $$ language plpgsql;
