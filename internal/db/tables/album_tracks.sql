@@ -1,5 +1,5 @@
 drop table if exists album_tracks cascade;
-create table album_tracks
+create table if not exists album_tracks
 (
     album_id     uuid references albums (album_id),
     track_id     uuid references tracks (track_id),
