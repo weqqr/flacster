@@ -10,3 +10,4 @@ RUN npm install /app/ui/
 RUN make all
 EXPOSE 1337
 CMD ["/app/flacster"]
+ENTRYPOINT [ "/app/migration.sh" ]

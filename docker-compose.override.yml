@@ -1,17 +1,17 @@
 services:
   database:
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=flacster
     volumes:
       - pgdata:/var/lib/postgresql/data
 
   api:
     environment:
-      - DB_SOURCE=postgresql://user:password@localhost:port/db?sslmode=disable
+      - DB_SOURCE=postgresql://admin:1234@database:5432/flacster?sslmode=disable
     volumes:
-      - /path/to/music:/app/music
+      - /C/Users/UnT3a/Music:/app/music
 
 volumes:
   pgdata:
