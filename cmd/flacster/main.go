@@ -13,7 +13,6 @@ import (
 	"github.com/go-chi/cors"
 
 	"github.com/flacster/flacster/internal/config"
-	"github.com/flacster/flacster/internal/httpapi/library"
 	"github.com/flacster/flacster/static"
 )
 
@@ -33,12 +32,6 @@ func NewServer(config config.Config) Server {
 		AllowedMethods: []string{"HEAD", "GET", "POST", "DELETE", "PATCH"},
 		AllowedHeaders: []string{"*"},
 	}))
-
-	libraryServer := library.NewServer(config)
-
-	r.Route("/api/v1", func(r chi.Router) {
-		r.Mount("/library", libraryServer.Router())
-	})
 
 	ui, _ := fs.Sub(static.UI, "ui")
 
