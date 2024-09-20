@@ -8,6 +8,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/alexflint/go-arg"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -15,6 +16,30 @@ import (
 	"github.com/flacster/flacster/internal/config"
 	"github.com/flacster/flacster/static"
 )
+
+type ForceIndex struct{}
+
+var args struct {
+	ForceIndex *ForceIndex `arg:"subcommand:forceindex"`
+}
+
+func main() {
+	arg.MustParse(&args)
+
+	conf := loadConfig()
+
+	switch {
+	case args.ForceIndex != nil:
+		forceIndex(conf)
+	default:
+		server := NewServer(conf)
+		server.Start(conf.Address)
+	}
+}
+
+func forceIndex(conf config.Config) {
+
+}
 
 type Server struct {
 	router chi.Router
@@ -72,11 +97,4 @@ func loadConfig() config.Config {
 	}
 
 	return conf
-}
-
-func main() {
-	conf := loadConfig()
-
-	server := NewServer(conf)
-	server.Start(conf.Address)
 }
