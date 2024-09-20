@@ -22,3 +22,6 @@ go.work
 
 # Config
 flacster.toml
+
+# Databases
+*.db

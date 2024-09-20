@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"io/fs"
 	"log"
@@ -14,7 +15,9 @@ import (
 	"github.com/go-chi/cors"
 
 	"github.com/flacster/flacster/internal/config"
+	"github.com/flacster/flacster/internal/database/sqlite3db"
 	"github.com/flacster/flacster/internal/index"
+	"github.com/flacster/flacster/internal/repo/file"
 	"github.com/flacster/flacster/static"
 )
 
@@ -39,8 +42,18 @@ func main() {
 }
 
 func forceIndex(conf config.Config) {
-	indexer := index.NewIndexer()
-	indexer.Index(conf.LibraryPath)
+	db, err := sqlite3db.NewSQLite3DB()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer db.Close()
+
+	indexer := index.NewIndexer(file.NewFileRepo(db))
+	err = indexer.Index(context.Background(), conf.LibraryPath)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 type Server struct {
