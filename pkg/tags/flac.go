@@ -109,7 +109,9 @@ func decodeFLACMetadata(r io.ReadSeeker) (Metadata, error) {
 			break
 		}
 
-		r.Seek(int64(header.Length), io.SeekCurrent)
+		if _, err = r.Seek(int64(header.Length), io.SeekCurrent); err != nil {
+			return Metadata{}, err
+		}
 	}
 
 	if header.Type != typeVorbisComment {

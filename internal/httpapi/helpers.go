@@ -18,7 +18,7 @@ func SendError(w http.ResponseWriter, err error) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusInternalServerError)
-	w.Write(data)
+	_, _ = w.Write(data)
 }
 
 func SendJSON(w http.ResponseWriter, response any) {

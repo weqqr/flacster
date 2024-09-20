@@ -18,7 +18,10 @@ type Metadata struct {
 func DecodeMetadata(r io.ReadSeeker) (Metadata, error) {
 	switch {
 	case isFLAC(r):
-		r.Seek(0, io.SeekStart)
+		if _, err := r.Seek(0, io.SeekStart); err != nil {
+			return Metadata{}, nil
+		}
+
 		return decodeFLACMetadata(r)
 	}
 	return Metadata{}, ErrUnsupportedFormat

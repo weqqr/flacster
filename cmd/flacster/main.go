@@ -70,7 +70,10 @@ func loadConfig() config.Config {
 	if errors.Is(err, os.ErrNotExist) {
 		log.Println("config file not found, using default")
 		conf = config.Default()
-		conf.Save(configPath)
+		if err := conf.Save(configPath); err != nil {
+			log.Fatal("couldn't write default config")
+		}
+
 	} else if err != nil {
 		log.Fatalf("failed to read config: %v", err)
 	}
