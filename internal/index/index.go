@@ -60,12 +60,20 @@ func (i *Indexer) Index(ctx context.Context, libraryPath string) error {
 		files = append(files, relativePath)
 
 		file, err := os.OpenFile(path, os.O_RDONLY, 0755)
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		mmappedData, err := mmap.Map(file, mmap.RDONLY, 0)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		defer mmappedData.Unmap()
+		defer func() {
+			if err := mmappedData.Unmap(); err != nil {
+				log.Fatal(err)
+			}
+		}()
 
 		meta, err := tags.DecodeMetadata(bytes.NewReader(mmappedData))
 		if err != nil {
