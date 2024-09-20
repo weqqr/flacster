@@ -1,7 +1,6 @@
 package main
 
 import (
-	"embed"
 	"errors"
 	"io/fs"
 	"log"
@@ -15,13 +14,14 @@ import (
 
 	"github.com/flacster/flacster/internal/config"
 	"github.com/flacster/flacster/internal/httpapi/library"
+	"github.com/flacster/flacster/static"
 )
 
 type Server struct {
 	router chi.Router
 }
 
-func NewServer(config config.Config, static fs.FS) Server {
+func NewServer(config config.Config) Server {
 	r := chi.NewRouter()
 
 	r.Use(middleware.RealIP)
@@ -40,7 +40,9 @@ func NewServer(config config.Config, static fs.FS) Server {
 		r.Mount("/library", libraryServer.Router())
 	})
 
-	r.Handle("/*", http.FileServer(http.FS(static)))
+	ui, _ := fs.Sub(static.UI, "ui")
+
+	r.Handle("/*", http.FileServer(http.FS(ui)))
 
 	return Server{
 		router: r,
@@ -76,14 +78,9 @@ func loadConfig() config.Config {
 	return conf
 }
 
-//go:embed all:static/*
-var static embed.FS
-
 func main() {
 	conf := loadConfig()
 
-	sub, _ := fs.Sub(static, "static")
-
-	server := NewServer(conf, sub)
+	server := NewServer(conf)
 	server.Start(conf.Address)
 }
