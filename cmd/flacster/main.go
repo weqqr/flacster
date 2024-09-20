@@ -14,6 +14,7 @@ import (
 	"github.com/go-chi/cors"
 
 	"github.com/flacster/flacster/internal/config"
+	"github.com/flacster/flacster/internal/index"
 	"github.com/flacster/flacster/static"
 )
 
@@ -38,7 +39,8 @@ func main() {
 }
 
 func forceIndex(conf config.Config) {
-
+	indexer := index.NewIndexer()
+	indexer.Index(conf.LibraryPath)
 }
 
 type Server struct {
